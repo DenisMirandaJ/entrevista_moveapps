@@ -1,7 +1,7 @@
 import { Calendar, Form } from "antd";
 import useBreakpoint from "antd/lib/grid/hooks/useBreakpoint";
-import moment from "moment";
-import { ReactElement } from "react";
+import moment, {Moment} from "moment";
+import { ReactElement, useEffect, useState } from "react";
 import { FormState } from "../../hooks/useFormState";
 import { RepairDateSelectorFormData } from "../../utils/formUtils/CalendarUtils";
 import DateInput from "../Inputs/DateInput";
@@ -14,14 +14,30 @@ const RepairDateSelector = ({
     formState
 }: RepairDateSelectorProps): ReactElement => {
     const {startDate, endDate} = formState.value
+    const [validDateRange, setValidDateRange] = useState<[Moment, Moment]>([moment(), moment().add(60, 'days')]);
+    const [validCalendarRange, setValidCalendarRange] = useState<[Moment, Moment]>([moment(), moment().add(60, 'days')]);
     const breakPoint = useBreakpoint();
 
-    let validDateRange: [moment.Moment, moment.Moment] | undefined = undefined;
-    let validCalendarRange: [moment.Moment, moment.Moment] | undefined = undefined;
-    if (startDate) {
-        validDateRange = [moment(startDate*1000).add(7, 'days'), moment(startDate*1000).add(67, 'days')]
-        validCalendarRange = [moment(startDate*1000), moment(startDate*1000).add(67, 'days')]
-    }
+    useEffect(() => {
+        let minimunWaitTimeAux = 0;
+        if (startDate) {
+            //Calculate mininum endDate
+            const startDateObject = moment(startDate*1000)
+            while (minimunWaitTimeAux < 7) {
+                const startDateObjectWeekDay = startDateObject.weekday();
+                //If working day
+                if (startDateObjectWeekDay < 5) {
+                    minimunWaitTimeAux = minimunWaitTimeAux + 1;
+                }
+                startDateObject.add(1, 'days')
+            }
+    
+            setValidDateRange([moment(startDate*1000).add(minimunWaitTimeAux, 'days'), moment(startDate*1000).add(67, 'days')])
+            setValidCalendarRange([moment(startDate*1000), moment(startDate*1000).add(67, 'days')])
+        }
+    }, [startDate])
+
+
     const datesHighlighter = (date: moment.Moment): ReactElement => {
         if (date.seconds(0).milliseconds(0).unix() === startDate) {
             return (
@@ -43,7 +59,7 @@ const RepairDateSelector = ({
     return (
         <>
             <Form layout="inline">
-                <DateInput id="startDate" label="Fecha entrega" onChange={formState.handleFieldChange} onlyWorkingDays />
+                <DateInput id="startDate" label="Fecha entrega" onChange={formState.handleFieldChange} onlyWorkingDays onlyFutureDates/>
                 <DateInput id="endDate" label="Fecha retorno" onChange={formState.handleFieldChange} validRange={validDateRange} onlyWorkingDays disabled={startDate ? false : true}/>
             </Form>
             <Calendar 

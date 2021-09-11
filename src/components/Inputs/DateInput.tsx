@@ -1,6 +1,7 @@
 import { DatePicker, Form} from 'antd';
 import { ReactElement } from 'react';
 import {Moment} from 'moment';
+import moment from 'moment';
 
 interface DateInputProps {
     id: string;
@@ -11,6 +12,7 @@ interface DateInputProps {
     validRange?: [Moment, Moment]
     onlyWorkingDays?: boolean;
     disabled?: boolean;
+    onlyFutureDates?: boolean;
 }
 
 const DateInput = ({
@@ -20,17 +22,20 @@ const DateInput = ({
     onChange,
     validRange,
     onlyWorkingDays,
-    disabled
+    disabled,
+    onlyFutureDates
 }: DateInputProps): ReactElement => {
 
     const checkDisabledDates = (date: Moment) => {
+        date = date.seconds(0).milliseconds(0);
         const weekDay = date.weekday()
         if (onlyWorkingDays && (weekDay === 5 || weekDay === 6)) {
             return true
         };
-        if (!validRange) return false;
-        if (date < validRange[0]) return true;
-        if (date > validRange[1]) return true;
+        if (onlyFutureDates && date < moment()) {return true}
+        if (!validRange) {return false};
+        if (date < validRange[0]) {return true};
+        if (date > validRange[1]) {return true};
         return false;
     }
 
