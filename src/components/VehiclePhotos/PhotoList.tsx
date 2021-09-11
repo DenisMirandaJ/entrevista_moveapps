@@ -1,5 +1,5 @@
-import { ReactElement, SetStateAction, useState } from 'react';
-import { Col, Divider, message, Modal, Row, Upload } from "antd"
+import { ReactElement, useState } from 'react';
+import { Divider, message, Modal, Upload } from "antd"
 import { PlusOutlined } from '@ant-design/icons';
 import { RcFile, UploadChangeParam, UploadFile } from 'antd/lib/upload/interface';
 import { dummyUploadRequest } from '../../utils/formUtils/uploadUtils';
@@ -99,12 +99,12 @@ const PhotoList = ({
             >
                 <div>
                     <PlusOutlined /> <br/>
-                    <div style={{ marginTop: 8 }}>{uploadText || 'Suba una imagen'}</div>
+                    <div style={{ marginTop: 8 }}><b>{uploadText || 'Suba una imagen'}</b></div>
                 </div>
             </Upload>
             <Divider style={{ borderWidth: 2}} />
             <Modal visible={showPreview} onOk={() => setShowPreview(false)} onCancel={() => setShowPreview(false)}>
-                <img src={previewImage} width="100%"/>
+                <img src={previewImage} width="100%" alt={"Foto de un vehiculo dañado"}/>
             </Modal>
         </>
     )

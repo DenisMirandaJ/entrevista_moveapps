@@ -1,4 +1,4 @@
-import { Col, Divider, Row } from "antd";
+import { Col, Row } from "antd";
 import { Gutter } from "antd/lib/grid/row";
 import { UploadFile } from "antd/lib/upload/interface";
 import { ReactElement } from "react";
@@ -16,6 +16,7 @@ const VehiclePhotos = ({
 }: VehiclePhotosProps): ReactElement => {
 
     const onImageListChange = (imageSetName: keyof VehiclePhotosFormData , newImageList: UploadFile[]) => {
+        //TODO: remove unused UploadFile items
         setVehicleImages({...vehicleImages, [imageSetName]: newImageList})
     }
 
