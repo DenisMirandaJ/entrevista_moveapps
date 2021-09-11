@@ -108,6 +108,7 @@ const UserInfoForm = ({
                         label="Sexo"
                         placeholder="Seleccione"
                         onChange={formState.handleFieldChange}
+                        required
                     /> 
                 </Col>
                 {/* FECHA NACIMIENTO Input */}

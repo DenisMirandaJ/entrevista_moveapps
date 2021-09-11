@@ -28,7 +28,8 @@ const VehicleInfoForm = ({
                         options={carTypes.carTypes}
                         label={'Tipo de vehículo'} 
                         placeholder={'Seleccione'} 
-                        onChange={formState.handleFieldChange}                       
+                        onChange={formState.handleFieldChange}
+                        required                      
                     />
                 </Col>
                 {/* CAR YEAR Input */}

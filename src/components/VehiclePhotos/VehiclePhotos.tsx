@@ -35,7 +35,7 @@ const VehiclePhotos = ({
             <Col xs={24} sm={24} md={12} lg={12}>
                 <PhotoList 
                     uploadedImages={vehicleImages.backSide} 
-                    onImageListChange={(newImageList) => onImageListChange('frontSide', newImageList)}
+                    onImageListChange={(newImageList) => onImageListChange('backSide', newImageList)}
                     uploadText={'Parte trasera del vehiculo'}
                 />
                 
@@ -45,14 +45,14 @@ const VehiclePhotos = ({
             <Col xs={24} sm={24} md={12} lg={12}>
                 <PhotoList 
                     uploadedImages={vehicleImages.leftSide} 
-                    onImageListChange={(newImageList) => onImageListChange('frontSide', newImageList)} 
+                    onImageListChange={(newImageList) => onImageListChange('leftSide', newImageList)} 
                     uploadText={'Izquierda del vehiculo'}
                 />
             </Col>
             <Col xs={24} sm={24} md={12} lg={12}>
                 <PhotoList 
                     uploadedImages={vehicleImages.rightSide} 
-                    onImageListChange={(newImageList) => onImageListChange('frontSide', newImageList)}
+                    onImageListChange={(newImageList) => onImageListChange('rightSide', newImageList)}
                     uploadText={'Derecha del vehiculo'}
                 />
             </Col>
