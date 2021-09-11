@@ -1,0 +1,15 @@
+{
+    "carTypes": [
+        "SUV",
+        "Hatchback",
+        "Sedan",
+        "Diesel",
+        "Camión",
+        "Van",
+        "Minivan",
+        "Furgón",
+        "Bus",
+        "Camioneta",
+        "Deportivo"
+    ]
+}
