@@ -4,7 +4,6 @@ import { FormState } from '../../hooks/useFormState';
 import { UserInfoFormData } from '../../utils/formUtils/UserFormUtils';
 import Input from '../Inputs/Input';
 import SelectInput from '../Inputs/SelectInput';
-import comunasChile from '../../assets/comunasChile.json'
 import DateInput from '../Inputs/DateInput';
 import FormButtons from '../FormButtons';
 import { useForm } from 'antd/lib/form/Form';
@@ -23,13 +22,25 @@ const UserInfoForm = ({
 
     const [form] = useForm();
 
-    const {firstname, lastname, rut, address, email, comuna, sex} = formState.value;
+    const {firstname, lastname, rut, address, email, comuna, sex, birthDate} = formState.value;
 
     const onFinishFailed = () => {
         message.error("Existen errores en el formulario");
     }
+    
+    const getErrors = () => {
+        if (
+            [firstname, lastname, rut, address, email, comuna, sex].includes('') ||
+            !birthDate
+        ) {
+            return ['Todos los campos son obligatorios'];
+        }
+        return [];
+    }
+
     const  onSubmit = (direction: 'forward' | 'back' = 'forward') => { 
-        const isFormValid = form.getFieldsError().filter(({ errors }) => errors.length).length == 0 && form.isFieldsTouched();
+        // const isFormValid = form.getFieldsError().filter(({ errors }) => errors.length).length == 0 && form.isFieldsTouched();
+        const isFormValid = getErrors().length;
         if (!isFormValid) {
             return;
         }

@@ -50,9 +50,6 @@ const VehiclePhotos = ({
                 }
             })
         });
-        if (imagesNotUploaded) {
-            errors.push('Imagenes aún cargandose');
-        }
 
         return errors;
     }

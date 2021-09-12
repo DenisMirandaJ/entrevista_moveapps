@@ -24,7 +24,7 @@ const VehicleRepairForm = (): ReactElement =>{
     const CalendarFormstate = useFormState(getEmptyRepairDateSelectorForm())
     const [showReceipt, setShowReceipt] = useState(false);
     const [receiptData, setReceiptData] = useState<VehicleRepairRequestInt | null>(null);
-
+    
     const [step, setStep] = useState(1);
 
     const nextStep = () => {setStep(step + 1)}

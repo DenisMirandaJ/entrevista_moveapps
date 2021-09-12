@@ -21,18 +21,25 @@ const VehicleInfoForm = ({
     onBackStep,
 }: VehicleInfoFormProps): ReactElement => {
     const [form] = useForm();
+    const {year, color, licensePlate, type, purchaseDate} = formState.value;
 
-    useEffect(() => {
+    const getErrors = () => {
+        if (
+            [year, color, licensePlate, type].includes('') ||
+            !purchaseDate
+        ) {
+            return ['Todos los campos son obligatorios'];
+        }
+        return [];
+    }
 
-    })
-
-    const {year, color, licensePlate} = formState.value;
     // console.log({'alltouched': form.isFieldsTouched(true)})
     // console.log({'errors' : form.getFieldsError()})
     const onSubmit = (direction: 'forward' | 'back' = 'forward') => { 
-        const isFormValid = (form.getFieldsError().filter(({ errors }) => errors.length).length == 0) && form.isFieldsTouched(true);
+        // const isFormValid = (form.getFieldsError().filter(({ errors }) => errors.length).length == 0) && form.isFieldsTouched(true);
+        const errors = getErrors();
+        const isFormValid = errors.length == 0;
         if (!isFormValid) {
-            console.log(form.getFieldsError());
             return;
         }
         direction === 'forward' ? onFinish() : onBackStep();
@@ -50,6 +57,7 @@ const VehicleInfoForm = ({
                 <Col xs={24} sm={24} md={12} lg={12}>
                     <SelectInput 
                         id="type" 
+                        value={type}
                         options={carTypes.carTypes}
                         label={'Tipo de vehículo'} 
                         placeholder={'Seleccione'} 
