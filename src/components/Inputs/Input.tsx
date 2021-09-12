@@ -29,10 +29,10 @@ const Input = ({
     return (
         <Form.Item
             label={label}
-            name={label}
+            name={id}
             rules={[...rules, { required, message: `${label} es requerido` }]}
         >
-            <AntdInput value={value} type={type} placeholder={placeholder} onChange={(e) => onChange(id, e.target.value)}/>
+            <AntdInput defaultValue={value} value={value} type={type} placeholder={placeholder} onChange={(e) => onChange(id, e.target.value)}/>
         </Form.Item>
     );
 }

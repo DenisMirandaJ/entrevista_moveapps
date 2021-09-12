@@ -1,10 +1,14 @@
-import { UploadFile } from "antd/lib/upload/interface"
+export interface ImageInt {
+    uid: string;
+    name: string;
+    base64: string;
+}
 
 export interface VehiclePhotosFormData {
-    frontSide: UploadFile<any>[];
-    backSide: UploadFile<any>[];
-    leftSide: UploadFile<any>[];
-    rightSide: UploadFile<any>[];
+    frontSide: ImageInt[];
+    backSide: ImageInt[];
+    leftSide: ImageInt[];
+    rightSide: ImageInt[];
 }
 
 export const getEmptyVehiclePhotosForm = (): VehiclePhotosFormData => {

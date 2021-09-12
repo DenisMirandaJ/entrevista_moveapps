@@ -5,7 +5,7 @@ const { Option } = Select;
 interface SelectInputProps {
     id: string;
     options: string[];
-    defaultValue?: string;
+    value?: string;
     label: string;
     placeholder: string;
     required?: boolean;
@@ -16,7 +16,7 @@ interface SelectInputProps {
 const SelectInput = ({
     id,
     options,
-    defaultValue,
+    value,
     label,
     placeholder,
     required,
@@ -29,7 +29,7 @@ const SelectInput = ({
             name={label}
             rules={[{ required, message: `${label} es requerido` }]}
         >
-            <Select defaultValue={defaultValue} placeholder={placeholder} onChange={(option: string) => onChange(id, option)}>
+            <Select value={value} defaultValue={value} placeholder={placeholder} onChange={(option: string) => onChange(id, option)}>
                 {
                     options.map(option =>
                         <Option key={option} value={option}>{option}</Option>

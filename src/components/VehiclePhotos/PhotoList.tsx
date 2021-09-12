@@ -3,6 +3,7 @@ import { Divider, message, Modal, Upload } from "antd"
 import { PlusOutlined } from '@ant-design/icons';
 import { RcFile, UploadChangeParam, UploadFile } from 'antd/lib/upload/interface';
 import { dummyUploadRequest } from '../../utils/formUtils/uploadUtils';
+import { ImageInt } from '../../utils/formUtils/vehiclePhotosUtils';
 
 
 interface PhotoListProps {
@@ -47,14 +48,26 @@ const PhotoList = ({
         setShowPreview(true);
     }
 
-    const handleNewImageUpload = (newImageListUploadObject : UploadChangeParam) => {
-        let uploadedImages = newImageListUploadObject.fileList;
-        uploadedImages = uploadedImages.map(image => {
+    const convertAntUploadObjectTOImageObject = async (upload: UploadFile): Promise<ImageInt> => {
+        const base64Image = await getBase64(upload.originFileObj);
+        return {
+            uid: upload.uid,
+            name: upload.name,
+            base64: base64Image as string,
+        }
+    }
+
+    const handleNewImageUpload = async (newImageListUploadObject : UploadChangeParam) => {
+        //Convertimos los objetos Upload de Ant a objetos ImageInt
+        const uploadedImagesAsync = newImageListUploadObject.fileList.map(async image => {
             if (image.response) {
               image.url = image.response.url;
             }
-            return image;
+            return await convertAntUploadObjectTOImageObject(image);
         });
+
+        const uploadedImages = await Promise.all(uploadedImagesAsync);
+
         onImageListChange(uploadedImages);
     }
 

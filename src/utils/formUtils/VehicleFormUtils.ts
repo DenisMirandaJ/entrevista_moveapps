@@ -1,7 +1,7 @@
 
 export interface VehicleInfoFormData {
     type: string;
-    year: number;
+    year: number | string;
     color: string;
     licensePlate: string;
     purchaseDate: Date | null;
@@ -10,7 +10,7 @@ export interface VehicleInfoFormData {
 export const getEmptyVehicleInfoForm = (): VehicleInfoFormData => {
     return {
         type: '',
-        year: 2000,
+        year: '',
         color: '',
         licensePlate: '',
         purchaseDate: null,
