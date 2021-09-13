@@ -4,7 +4,7 @@ export interface VehicleInfoFormData {
     year: number | string;
     color: string;
     licensePlate: string;
-    purchaseDate: Date | null;
+    purchaseDate: number | null;
 } 
 
 export const getEmptyVehicleInfoForm = (): VehicleInfoFormData => {

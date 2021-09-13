@@ -10,7 +10,8 @@ interface SelectInputProps {
     placeholder: string;
     required?: boolean;
     onChange(fieldName: string, value: unknown): void;
-    errorMessage?: string
+    errorMessage?: string;
+    disabled?: boolean;
 }
 
 const SelectInput = ({
@@ -21,6 +22,7 @@ const SelectInput = ({
     placeholder,
     required,
     onChange,
+    disabled
 }: SelectInputProps): ReactElement => {
     return (
         <Form.Item
@@ -29,7 +31,7 @@ const SelectInput = ({
             name={label}
             rules={[{ required, message: `${label} es requerido` }]}
         >
-            <Select value={value} defaultValue={value} placeholder={placeholder} onChange={(option: string) => onChange(id, option)}>
+            <Select disabled={disabled} value={value} defaultValue={value} placeholder={placeholder} onChange={(option: string) => onChange(id, option)}>
                 {
                     options.map(option =>
                         <Option key={option} value={option}>{option}</Option>

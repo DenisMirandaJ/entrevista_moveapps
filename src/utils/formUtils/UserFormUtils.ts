@@ -7,8 +7,8 @@ export interface UserInfoFormData {
     comuna: string;
     email: string;
     sex: string;
-    birthDate: Date | null
-} 
+    age: string | number;
+}
 
 export const getEmptyUserInfoForm = (): UserInfoFormData => {
     return {
@@ -19,6 +19,6 @@ export const getEmptyUserInfoForm = (): UserInfoFormData => {
         comuna: '',
         email: '',
         sex: '',
-        birthDate: null,
+        age: '',
     }
 }

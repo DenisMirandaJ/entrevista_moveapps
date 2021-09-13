@@ -1,8 +1,5 @@
 import { Col, message, Row } from "antd";
-import form from "antd/lib/form";
-import { useForm } from "antd/lib/form/Form";
 import { Gutter } from "antd/lib/grid/row";
-import image from "antd/lib/image";
 import { UploadFile } from "antd/lib/upload/interface";
 import { ReactElement } from "react";
 import { VehiclePhotosFormData } from "../../utils/formUtils/vehiclePhotosUtils";
@@ -14,6 +11,7 @@ interface VehiclePhotosProps {
     setVehicleImages: React.Dispatch<React.SetStateAction<VehiclePhotosFormData>>
     onFinish: () => void;
     onBackStep: () => void;
+    readOnly?: boolean;
 }
 
 const VehiclePhotos = ({
@@ -21,6 +19,7 @@ const VehiclePhotos = ({
     setVehicleImages,
     onFinish,
     onBackStep,
+    readOnly
 }: VehiclePhotosProps): ReactElement => {
 
     const onImageListChange = (imageSetName: keyof VehiclePhotosFormData , newImageList: UploadFile[]) => {
@@ -54,13 +53,13 @@ const VehiclePhotos = ({
         return errors;
     }
 
-    const  onSubmit = (direction: 'forward' | 'back' = 'forward') => { 
+    const  onSubmit = () => { 
         const errors = getFormErrors();
         if (errors.length > 0) {
             message.error(errors[0])
             return;
         }
-        direction === 'forward' ? onFinish() : onBackStep();
+        onFinish();
     }
 
     const gridGutter: [Gutter, Gutter] = [{ xs: 8, sm: 16, md: 24, lg: 32 }, 0]
@@ -69,7 +68,8 @@ const VehiclePhotos = ({
         <>
         <Row gutter={gridGutter}>
             <Col xs={24} sm={24} md={12} lg={12}>
-                <PhotoList 
+                <PhotoList
+                    disabled={readOnly}
                     uploadedImages={vehicleImages.frontSide} 
                     onImageListChange={(newImageList) => onImageListChange('frontSide', newImageList)}
                     uploadText={'Frente del vehiculo'}
@@ -77,6 +77,7 @@ const VehiclePhotos = ({
             </Col>
             <Col xs={24} sm={24} md={12} lg={12}>
                 <PhotoList 
+                    disabled={readOnly}
                     uploadedImages={vehicleImages.backSide} 
                     onImageListChange={(newImageList) => onImageListChange('backSide', newImageList)}
                     uploadText={'Parte trasera del vehiculo'}
@@ -86,7 +87,8 @@ const VehiclePhotos = ({
         </Row>
         <Row gutter={gridGutter}>
             <Col xs={24} sm={24} md={12} lg={12}>
-                <PhotoList 
+                <PhotoList
+                    disabled={readOnly} 
                     uploadedImages={vehicleImages.leftSide} 
                     onImageListChange={(newImageList) => onImageListChange('leftSide', newImageList)} 
                     uploadText={'Izquierda del vehiculo'}
@@ -94,6 +96,7 @@ const VehiclePhotos = ({
             </Col>
             <Col xs={24} sm={24} md={12} lg={12}>
                 <PhotoList 
+                    disabled={readOnly}
                     uploadedImages={vehicleImages.rightSide} 
                     onImageListChange={(newImageList) => onImageListChange('rightSide', newImageList)}
                     uploadText={'Derecha del vehiculo'}
@@ -101,7 +104,9 @@ const VehiclePhotos = ({
             </Col>
         </Row>
         <Row>
-            <FormButtons onForwardButtonClick={() => onSubmit('forward')} onBackButtonClick={() => onSubmit('back')} />
+            <Col span={24}>
+                <FormButtons disabled={readOnly} onForwardButtonClick={onSubmit} onBackButtonClick={onBackStep} />
+            </Col>
         </Row>
         </>
     )

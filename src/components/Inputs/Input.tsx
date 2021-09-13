@@ -10,7 +10,8 @@ interface InputProps {
     placeholder: string;
     required?: boolean;
     onChange(fieldName: string, value: unknown): void;
-    rules?: Rule[]
+    rules?: Rule[];
+    disabled?: boolean;
 }
 
 const Input = ({
@@ -21,7 +22,8 @@ const Input = ({
     placeholder,
     required,
     onChange,
-    rules
+    rules,
+    disabled
 }: InputProps): ReactElement => {
 
     if (!rules) {rules = []};
@@ -32,7 +34,7 @@ const Input = ({
             name={id}
             rules={[...rules, { required, message: `${label} es requerido` }]}
         >
-            <AntdInput defaultValue={value} value={value} type={type} placeholder={placeholder} onChange={(e) => onChange(id, e.target.value)}/>
+            <AntdInput disabled={disabled} defaultValue={value} value={value} type={type} placeholder={placeholder} onChange={(e) => onChange(id, e.target.value)}/>
         </Form.Item>
     );
 }

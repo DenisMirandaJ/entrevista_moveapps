@@ -5,6 +5,7 @@ import moment from 'moment';
 
 interface DateInputProps {
     id: string;
+    valueUnixTime: number | null;
     label: string;
     required?: boolean;
     onChange(fieldName: string, value: unknown): void;
@@ -18,6 +19,7 @@ interface DateInputProps {
 const DateInput = ({
     id,
     label,
+    valueUnixTime,
     required,
     onChange,
     validRange,
@@ -45,7 +47,8 @@ const DateInput = ({
             label={label}
             rules={[{ required, message: `${label} es requerido` }]}
         >
-            <DatePicker 
+            <DatePicker
+                defaultValue={!!valueUnixTime ? moment(valueUnixTime*1000) :  undefined}
                 onChange={(date) => onChange(id, date?.seconds(0).milliseconds(0).unix())} 
                 disabledDate={checkDisabledDates}
                 disabled={disabled}

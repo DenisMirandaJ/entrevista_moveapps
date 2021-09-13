@@ -13,6 +13,7 @@ interface PhotoListProps {
     acceptedFileTypes?: string[]
     maxFileSize?: number;
     maxImages?: number;
+    disabled?: boolean;
 }
 
 const PhotoList = ({
@@ -20,8 +21,9 @@ const PhotoList = ({
     onImageListChange,
     uploadText,
     acceptedFileTypes = ['image/png', 'image/jpg', 'image/jpeg'],
-    maxFileSize = 15*1024,
-    maxImages=4
+    maxFileSize = 15*1024*1024,
+    maxImages=4,
+    disabled,
 }: PhotoListProps): ReactElement =>  {
     
     const [previewImage, setPreviewImage] = useState('') //Base64 encoded
@@ -48,26 +50,7 @@ const PhotoList = ({
         setShowPreview(true);
     }
 
-    const convertAntUploadObjectTOImageObject = async (upload: UploadFile): Promise<ImageInt> => {
-        const base64Image = await getBase64(upload.originFileObj);
-        return {
-            uid: upload.uid,
-            name: upload.name,
-            base64: base64Image as string,
-            preview: upload.preview,
-        }
-    }
-
     const handleNewImageUpload = async (newImageListUploadObject : UploadChangeParam) => {
-        // const uploadedImagesAsync = newImageListUploadObject.fileList.map(async image => {
-        //     if (image.response) {
-        //       image.url = image.response.url;
-        //     }
-        //     const base64 = await convertAntUploadObjectTOImageObject(image);
-        // });
-
-        // const uploadedImages = await Promise.all(uploadedImagesAsync);
-
         onImageListChange(newImageListUploadObject.fileList);
     }
 
@@ -89,7 +72,7 @@ const PhotoList = ({
         if (!maxFileSize || !file.size) {
             return false
         }
-        if (file.size/1024 > maxFileSize) {
+        if (file.size > maxFileSize) {
             message.error(`Tamaño maximo de archivo superado (${maxFileSize/1024} MB)`);
             return Upload.LIST_IGNORE; 
         }
@@ -109,9 +92,11 @@ const PhotoList = ({
                 onPreview={handlePreview}
                 multiple
                 maxCount={4}
-            >
+                disabled={disabled}
+            >               
                 <div>
-                    <PlusOutlined /> <br/>
+                    { !disabled && <PlusOutlined />}
+                    <br/>
                     <div style={{ marginTop: 8 }}><b>{uploadText || 'Suba una imagen'}</b></div>
                 </div>
             </Upload>

@@ -6,50 +6,29 @@ import Input from '../Inputs/Input';
 import SelectInput from '../Inputs/SelectInput';
 import DateInput from '../Inputs/DateInput';
 import FormButtons from '../FormButtons';
-import { useForm } from 'antd/lib/form/Form';
+import { FormInstance, useForm } from 'antd/lib/form/Form';
 
 interface UserInfoFormProps {
-    formState: FormState<UserInfoFormData>;
+    formState: FormInstance<UserInfoFormData>;
     onFinish: () => void;
-    onBackStep: () => void;
+    readOnly?: boolean;
 }
 
 const UserInfoForm = ({
     formState,
     onFinish,
-    onBackStep,
+    readOnly
 }: UserInfoFormProps): ReactElement => {
 
-    const [form] = useForm();
-
-    const {firstname, lastname, rut, address, email, comuna, sex, birthDate} = formState.value;
+    const {firstname, lastname, rut, address, email, comuna, sex, age} = formState.getFieldsValue();
 
     const onFinishFailed = () => {
         message.error("Existen errores en el formulario");
     }
-    
-    const getErrors = () => {
-        if (
-            [firstname, lastname, rut, address, email, comuna, sex].includes('') ||
-            !birthDate
-        ) {
-            return ['Todos los campos son obligatorios'];
-        }
-        return [];
-    }
-
-    const  onSubmit = (direction: 'forward' | 'back' = 'forward') => { 
-        // const isFormValid = form.getFieldsError().filter(({ errors }) => errors.length).length == 0 && form.isFieldsTouched();
-        const isFormValid = getErrors().length;
-        if (!isFormValid) {
-            return;
-        }
-        direction === 'forward' ? onFinish() : onBackStep();
-    }
 
     const colSpacing ={ xs: 8, sm: 16, md: 24, lg: 32 }
     return (
-        <Form form={form} layout="vertical" onFinish={() => onSubmit('forward')} onFinishFailed={onFinishFailed}>
+        <Form form={formState} initialValues={formState.getFieldsValue()} layout="vertical" onFinish={onFinish} onFinishFailed={onFinishFailed}>
             <Row gutter={colSpacing}>
                 {/* NOMBRES Input */}
                 <Col xs={24} sm={24} md={12} lg={12}>
@@ -59,9 +38,8 @@ const UserInfoForm = ({
                         value={firstname} 
                         label='Nombres'
                         placeholder='Nombres'
-                        onChange={formState.handleFieldChange}
-                        required
-                    />
+                        onChange={(fieldName, value) => formState.setFieldsValue({[fieldName] : value})}
+                        required disabled={readOnly}                    />
                 </Col>
                 {/* APELLIDOS Input */}
                 <Col xs={24} sm={24} md={12} lg={12}>
@@ -71,9 +49,8 @@ const UserInfoForm = ({
                         value={lastname} 
                         label='Apellidos'
                         placeholder='Apellidos'
-                        onChange={formState.handleFieldChange}
-                        required
-                    />
+                        onChange={(fieldName, value) => formState.setFieldsValue({[fieldName] : value})}
+                        required disabled={readOnly}                    />
                  </Col>
             </Row>
             <Row gutter={colSpacing}>
@@ -85,9 +62,8 @@ const UserInfoForm = ({
                         value={rut} 
                         label='RUT'
                         placeholder='RUT'
-                        onChange={formState.handleFieldChange}
-                        required
-                    />
+                        onChange={(fieldName, value) => formState.setFieldsValue({[fieldName] : value})}
+                        required disabled={readOnly}                    />
                 </Col>
                 {/* EMAIL Input */}
                 <Col xs={24} sm={24} md={12} lg={12}>
@@ -97,9 +73,8 @@ const UserInfoForm = ({
                         value={email}  
                         label='Correo electrónico'
                         placeholder='Correo electrónico'
-                        onChange={formState.handleFieldChange}
-                        required
-                        rules={[{
+                        onChange={(fieldName, value) => formState.setFieldsValue({[fieldName] : value})}
+                        required disabled={readOnly}                        rules={[{
                             pattern:/^[a-z0-9_.-]+@[\da-z.-]+\.[a-z.]{2,6}$/,
                             'message': "Ingrese un correo válido"
                         }]}
@@ -115,9 +90,8 @@ const UserInfoForm = ({
                         value={address}  
                         label='Dirección'
                         placeholder='Ej: Pasaje Aventuras 1254, Calama'
-                        onChange={formState.handleFieldChange}
-                        required
-                    />
+                        onChange={(fieldName, value) => formState.setFieldsValue({[fieldName] : value})}
+                        required disabled={readOnly}                    />
                 </Col>
                 {/* COMUNA Input */}
                 <Col xs={24} sm={24} md={4}>
@@ -126,8 +100,7 @@ const UserInfoForm = ({
                         // options={comunasChile.comunas} 
                         label="Comuna"
                         placeholder="Seleccione una comuna"
-                        required
-                        onChange={formState.handleFieldChange} 
+                        required disabled={readOnly}                        onChange={(fieldName, value) => formState.setFieldsValue({[fieldName] : value})} 
                         value={comuna} 
                         type='text'                    /> 
                 </Col>
@@ -139,18 +112,25 @@ const UserInfoForm = ({
                         options={['Masculino', 'Femenino', 'Prefiere no decir']} 
                         label="Sexo"
                         placeholder="Seleccione"
-                        onChange={formState.handleFieldChange}
-                        required
-                    /> 
+                        onChange={(fieldName, value) => formState.setFieldsValue({[fieldName] : value})}
+                        required disabled={readOnly}                    /> 
                 </Col>
                 {/* FECHA NACIMIENTO Input */}
                 <Col xs={24} sm={24} md={4}>
-                    <DateInput id="birthDate" label="Fecha de nacimiento" onChange={formState.handleFieldChange} required/>
+                    <Input 
+                        id="age"
+                        type="number"
+                        value={age}
+                        label="Edad"
+                        onChange={(fieldName, value) => formState.setFieldsValue({ [fieldName]: value })}
+                        placeholder={'Edad'} 
+                        required                   
+                    />
                 </Col>
             </Row>
             <Row>
                 <Col span={24}>
-                    <FormButtons onForwardButtonClick={() => onSubmit('forward')} onBackButtonClick={() => onSubmit('back')} />
+                    <FormButtons disabled={readOnly} onBackButtonClick={() => {}} />
                 </Col>
             </Row>
         </Form> 

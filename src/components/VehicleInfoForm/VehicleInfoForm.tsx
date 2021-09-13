@@ -7,51 +7,45 @@ import { VehicleInfoFormData } from '../../utils/formUtils/VehicleFormUtils';
 import carTypes from '../../assets/vehicleTypes.json'
 import DateInput from '../Inputs/DateInput';
 import FormButtons from '../FormButtons';
-import { useForm } from 'antd/lib/form/Form';
+import { FormInstance, useForm } from 'antd/lib/form/Form';
 
 interface VehicleInfoFormProps {
-    formState: FormState<VehicleInfoFormData>;
+    formState: FormInstance<VehicleInfoFormData>;
     onFinish: () => void;
     onBackStep: () => void;
+    readOnly?: boolean;
 }
 
 const VehicleInfoForm = ({
     formState,
     onFinish,
     onBackStep,
+    readOnly
 }: VehicleInfoFormProps): ReactElement => {
-    const [form] = useForm();
-    const {year, color, licensePlate, type, purchaseDate} = formState.value;
+    const {year, color, licensePlate, type, purchaseDate} = formState.getFieldsValue();
 
-    const getErrors = () => {
-        if (
-            [year, color, licensePlate, type].includes('') ||
-            !purchaseDate
-        ) {
-            return ['Todos los campos son obligatorios'];
-        }
-        return [];
-    }
-
-    // console.log({'alltouched': form.isFieldsTouched(true)})
-    // console.log({'errors' : form.getFieldsError()})
     const onSubmit = (direction: 'forward' | 'back' = 'forward') => { 
-        // const isFormValid = (form.getFieldsError().filter(({ errors }) => errors.length).length == 0) && form.isFieldsTouched(true);
-        const errors = getErrors();
-        const isFormValid = errors.length == 0;
+        const isFormValid = (formState.getFieldsError().filter(({ errors }) => errors.length).length == 0);
+        // const errors = getErrors();
         if (!isFormValid) {
+            // const isFormValid = errors.length == 0;
+            console.log({'alltouched': formState.isFieldsTouched(true)})
+            console.log({'errors' : formState.getFieldsError()})
+            message.error('Hay errores en el formulario');
             return;
         }
         direction === 'forward' ? onFinish() : onBackStep();
     }
 
-    const onFinishFailed = () => {
-        message.error("Existen errores en el formulario");
-    }
-
     const colSpacing ={ xs: 8, sm: 16, md: 24, lg: 32 }
     return (
-        <Form form={form} layout="vertical" onFinish={() => onSubmit('forward')} onFinishFailed={onFinishFailed}>
+        <Form 
+            form={formState} 
+            initialValues={formState.getFieldsValue()} 
+            layout="vertical" 
+            onFinish={() => onSubmit('forward')}
+            onFinishFailed={() => {message.error('Existen errores en el formulario, todos los campos son obligatorios')}}
+        >
             <Row gutter={colSpacing}>
                 {/* CAR TYPE Input */}
                 <Col xs={24} sm={24} md={12} lg={12}>
@@ -61,7 +55,7 @@ const VehicleInfoForm = ({
                         options={carTypes.carTypes}
                         label={'Tipo de vehículo'} 
                         placeholder={'Seleccione'} 
-                        onChange={formState.handleFieldChange}
+                        onChange={(fieldName, value) => formState.setFieldsValue({[fieldName] : value})}
                         required                      
                     />
                 </Col>
@@ -73,9 +67,8 @@ const VehicleInfoForm = ({
                         value={year} 
                         label='Año del vehiculo'
                         placeholder='Año del vehiculo'
-                        onChange={formState.handleFieldChange}
-                        required
-                        rules={[{max: new Date().getFullYear() + 1, message: "Ingrese un año valido"}]}
+                        onChange={(fieldName, value) => formState.setFieldsValue({[fieldName] : value})}
+                        required disabled={readOnly}                        rules={[{max: new Date().getFullYear() + 1, message: "Ingrese un año valido"}]}
                     />
                  </Col>
             </Row>
@@ -88,28 +81,35 @@ const VehicleInfoForm = ({
                         value={color} 
                         label='Color de vehículo'
                         placeholder='Ej: Azul electrico'
-                        onChange={formState.handleFieldChange}
-                        required
-                    />
+                        onChange={(fieldName, value) => formState.setFieldsValue({[fieldName] : value})}
+                        required disabled={readOnly}                    />
                  </Col>
                 {/* LICENSE PLATE Input */}
-                <Col xs={24} sm={24} md={8} lg={6}>
+                <Col xs={24} sm={24} md={12} lg={12}>
                     <Input 
                         id='licensePlate' 
                         type='text'
                         value={licensePlate} 
                         label='Placa patente'
                         placeholder='Ej: XH6640'
-                        onChange={formState.handleFieldChange}
-                        required
-                    />
-                 </Col>
-                 <Col xs={24} sm={24} md={4} lg={4}>
-                    <DateInput id="purchaseDate" label="Fecha compra" onChange={formState.handleFieldChange} required/>
+                        onChange={(fieldName, value) => formState.setFieldsValue({[fieldName] : value})}
+                        required disabled={readOnly}                    />
                  </Col>
             </Row>
             <Row>
-                <FormButtons onForwardButtonClick={() => onSubmit('forward')} onBackButtonClick={() => onSubmit('back')} />
+                <Col xs={24} sm={24} md={12} lg={12}>
+                    <DateInput 
+                        id="purchaseDate" 
+                        valueUnixTime={purchaseDate}
+                        label="Fecha compra" 
+                        onChange={(fieldName, value) => formState.setFieldsValue({[fieldName] : value})} 
+                        required disabled={readOnly}                    />
+                 </Col>
+            </Row>
+            <Row>
+                <Col span={24}>
+                    <FormButtons disabled={readOnly} onBackButtonClick={onBackStep} />
+                </Col>
             </Row>
         </Form> 
     );

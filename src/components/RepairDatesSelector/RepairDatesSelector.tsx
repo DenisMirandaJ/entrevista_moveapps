@@ -1,4 +1,4 @@
-import { Calendar, Form, message } from "antd";
+import { Calendar, Form, FormInstance, message } from "antd";
 import useBreakpoint from "antd/lib/grid/hooks/useBreakpoint";
 import moment, {Moment} from "moment";
 import { ReactElement, useEffect, useState } from "react";
@@ -8,17 +8,27 @@ import FormButtons from "../FormButtons";
 import DateInput from "../Inputs/DateInput";
 
 interface RepairDateSelectorProps {
-    formState: FormState<RepairDateSelectorFormData>,
+    formState: calendarStateManager,
     onFinish: () => void;
     onBackStep: () => void;
+    readOnly?: boolean;
 }
+
+type calendarStateManager = [{
+    startDate: number | null;
+    endDate: number | null;
+}, React.Dispatch<React.SetStateAction<{
+    startDate: number | null;
+    endDate: number | null;
+}>>];
 
 const RepairDateSelector = ({
     formState,
     onFinish,
     onBackStep,
+    readOnly,
 }: RepairDateSelectorProps): ReactElement => {
-    const {startDate, endDate} = formState.value
+    const {startDate, endDate} = formState[0];
     const [validDateRange, setValidDateRange] = useState<[Moment, Moment]>([moment(), moment().add(60, 'days')]);
     const [validCalendarRange, setValidCalendarRange] = useState<[Moment, Moment]>([moment(), moment().add(60, 'days')]);
     const breakPoint = useBreakpoint();
@@ -84,16 +94,32 @@ const RepairDateSelector = ({
     return (
         <>
             <Form layout="inline">
-                <DateInput id="startDate" label="Fecha entrega" onChange={formState.handleFieldChange} onlyWorkingDays onlyFutureDates/>
-                <DateInput id="endDate" label="Fecha retorno" onChange={formState.handleFieldChange} validRange={validDateRange} onlyWorkingDays disabled={startDate ? false : true}/>
+                <DateInput 
+                    id="startDate" 
+                    label="Fecha entrega" 
+                    valueUnixTime={startDate}
+                    onChange={(fieldName, value) => formState[1]({'endDate': endDate, startDate: value as number})} 
+                    onlyWorkingDays 
+                    onlyFutureDates
+                    disabled={readOnly}
+                />
+                <DateInput 
+                    id="endDate" 
+                    label="Fecha retorno"
+                    valueUnixTime={endDate}
+                    onChange={(fieldName, value) => formState[1]({'startDate': startDate, endDate: value as number})} 
+                    validRange={validDateRange} 
+                    onlyWorkingDays 
+                    disabled={(startDate? false : true) || readOnly}
+                />
             </Form>
             <Calendar 
                 value={startDate? moment(startDate*1000): moment()}
-                fullscreen={breakPoint.sm || breakPoint.md}  
+                fullscreen={false}
                 dateCellRender={datesHighlighter}
                 validRange={validCalendarRange}
             />
-            <FormButtons onForwardButtonClick={() => onSubmit('forward')} onBackButtonClick={() => onSubmit('back')} />
+            <FormButtons isFinal disabled={readOnly} onForwardButtonClick={() => onSubmit('forward')} onBackButtonClick={() => onSubmit('back')} />
         </>
     )
 }

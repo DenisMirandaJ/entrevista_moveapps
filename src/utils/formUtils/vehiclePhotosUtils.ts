@@ -4,7 +4,6 @@ export interface ImageInt {
     uid: string;
     name: string;
     base64: string;
-    preview: string | undefined;
 }
 
 export interface VehiclePhotosFormData {
