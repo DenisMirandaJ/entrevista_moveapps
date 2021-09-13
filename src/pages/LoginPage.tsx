@@ -15,7 +15,7 @@ const LoginPage = (): ReactElement => {
                 </Col>
             </Row>
         </Content>
-        <Footer>2021</Footer>
+        <Footer>Usuario: "mail@mail.com" |  clave: "1234"</Footer>
     </Layout>
     )
 }   
