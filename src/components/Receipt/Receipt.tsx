@@ -1,4 +1,4 @@
-import { Button, Divider, message } from "antd";
+import { Button, Col, Divider, message, Row } from "antd";
 import { UploadFile } from "antd/lib/upload/interface";
 import React from "react";
 import { ReactElement } from "react";
@@ -15,10 +15,11 @@ export interface StepForm {
 interface ReceiptProps {
     stepForm: StepForm[];
     data: VehicleRepairRequestInt | null | string;
+    onCancel: () => void;
 }
 
 //Renderiza los formularios con el prop añadido readOnly
-const Receipt = ({stepForm, data}: ReceiptProps): ReactElement => {
+const Receipt = ({stepForm, data, onCancel}: ReceiptProps): ReactElement => {
     const history = useHistory();
 
     const getBase64ImageFromCarPhotos = (carImageList: UploadFile[]): ImageInt[] => {
@@ -73,9 +74,19 @@ const Receipt = ({stepForm, data}: ReceiptProps): ReactElement => {
             <p>Por favor revise los datos ingresados. Encontrará un boton de confirmación al final de la página</p>
         </b>
         {receipt}
-        <Button block onClick={sendRequest}>
-                Enviar formulario
-        </Button>
+        <Row gutter={1}>
+           <Col span={12}>
+                <Button block type="primary" onClick={sendRequest}>
+                    Enviar formulario
+                </Button>
+           </Col>
+           <Col span={12}>
+                <Button block onClick={onCancel}>
+                    Corregir datos
+                </Button>
+           </Col>  
+        </Row>
+        
       </>
     )
 }

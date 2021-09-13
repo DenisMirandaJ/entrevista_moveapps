@@ -12,6 +12,8 @@ import { VehicleRepairRequestInt } from '../../requests/VehicleRepairFormRequest
 import { useForm } from 'antd/lib/form/Form';
 import Receipt from '../Receipt/Receipt';
 import { FormStepContext } from '../../pages/FormPage';
+
+//Cambiando el locale de moment js, para cambiar el de antd
 moment.locale('es');
 moment.updateLocale('en', {
     weekdaysMin : ["Lun", "Mar", "Mie", "Jue", "Vie", "Sab", "Dom"]
@@ -77,9 +79,9 @@ const VehicleRepairForm = (): ReactElement =>{
     ];
 
 
-    if (receiptData) {
+    if (showReceipt && receiptData) {
       //@ts-ignore
-      return <Receipt stepForm={stepForm} data={receiptData} />
+      return <Receipt stepForm={stepForm} data={receiptData} onCancel={() => {setShowReceipt(false)}}/>
     }
 
     return (
