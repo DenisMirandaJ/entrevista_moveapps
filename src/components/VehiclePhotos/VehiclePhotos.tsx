@@ -1,4 +1,4 @@
-import { Col, message, Row } from "antd";
+import { Button, Col, message, Row } from "antd";
 import { Gutter } from "antd/lib/grid/row";
 import { UploadFile } from "antd/lib/upload/interface";
 import { ReactElement } from "react";
@@ -64,6 +64,15 @@ const VehiclePhotos = ({
 
     const gridGutter: [Gutter, Gutter] = [{ xs: 8, sm: 16, md: 24, lg: 32 }, 0]
 
+    const removeAllImages = () => {
+        setVehicleImages({
+            frontSide: [],
+            backSide: [],
+            leftSide: [],
+            rightSide: []
+        })
+    }
+
     return (
         <>
         <Row gutter={gridGutter}>
@@ -88,7 +97,7 @@ const VehiclePhotos = ({
         <Row gutter={gridGutter}>
             <Col xs={24} sm={24} md={12} lg={12}>
                 <PhotoList
-                    disabled={readOnly} 
+                    disabled={readOnly}
                     uploadedImages={vehicleImages.leftSide} 
                     onImageListChange={(newImageList) => onImageListChange('leftSide', newImageList)} 
                     uploadText={'Izquierda del vehiculo'}
@@ -103,6 +112,14 @@ const VehiclePhotos = ({
                 />
             </Col>
         </Row>
+        <Row justify='center'>
+            <Col span={24}>
+                <Button block onClick={removeAllImages}>
+                    Eliminar todas las imágenes
+                </Button>
+            </Col>
+        </Row>
+        <br></br>
         <Row>
             <Col span={24}>
                 <FormButtons disabled={readOnly} onForwardButtonClick={onSubmit} onBackButtonClick={onBackStep} />
