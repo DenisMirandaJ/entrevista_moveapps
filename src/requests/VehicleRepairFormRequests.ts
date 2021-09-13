@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { RepairDateSelectorFormData } from '../utils/formUtils/CalendarUtils';
 import { UserInfoFormData } from '../utils/formUtils/UserFormUtils';
 import { VehicleInfoFormData } from '../utils/formUtils/VehicleFormUtils';

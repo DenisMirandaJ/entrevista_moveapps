@@ -1,7 +1,7 @@
 import LockOutlined from "@ant-design/icons/lib/icons/LockOutlined";
 import { Button, Form, Input, message } from "antd"
 import { useForm } from "antd/lib/form/Form";
-import { ReactElement, useState } from "react"
+import { ReactElement } from "react"
 import { useHistory } from "react-router";
 import { loginRequest } from "../../requests/loginRequest";
 

@@ -44,7 +44,7 @@ const VehiclePhotos = ({
         let imagesNotUploaded = false;
         Object.values(vehicleImages).forEach((images) => {
             (images as UploadFile[]).forEach(image => {
-                if (image.status != 'done') {
+                if (image.status !== 'done') {
                     imagesNotUploaded = true;
                 }
             })

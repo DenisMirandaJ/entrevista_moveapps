@@ -15,7 +15,7 @@ export const LogOutAfterTime = ({time}: LogOutAfterTimeProps): ReactElement => {
             localStorage.clear();
             setTimeToLogOf(true);
         }, time)
-    }, []);
+    }, [time]);
 
     return (
         <Modal title="Time's out!" visible={timeToLogOf} onOk={() => history.push('/')} onCancel={() => history.push('/')}>

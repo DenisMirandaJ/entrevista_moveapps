@@ -1,4 +1,4 @@
-import { Col, Layout, Row, Space } from "antd";
+import { Col, Layout, Row } from "antd";
 import { Header, Content, Footer } from "antd/lib/layout/layout";
 import { ReactElement } from "react";
 import Login from "../components/login/Login";

@@ -1,12 +1,10 @@
 import { Col, Form, message, Row } from 'antd';
 import { ReactElement } from 'react';
-import { FormState } from '../../hooks/useFormState';
 import { UserInfoFormData } from '../../utils/formUtils/UserFormUtils';
 import Input from '../Inputs/Input';
 import SelectInput from '../Inputs/SelectInput';
-import DateInput from '../Inputs/DateInput';
 import FormButtons from '../FormButtons';
-import { FormInstance, useForm } from 'antd/lib/form/Form';
+import { FormInstance } from 'antd/lib/form/Form';
 
 interface UserInfoFormProps {
     formState: FormInstance<UserInfoFormData>;

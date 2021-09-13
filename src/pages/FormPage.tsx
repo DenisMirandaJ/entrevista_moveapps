@@ -1,7 +1,6 @@
-import { Col, Layout, Row, Space } from "antd";
+import { Col, Layout, Row } from "antd";
 import { Header, Content, Footer } from "antd/lib/layout/layout";
 import { createContext, ReactElement, useState } from "react";
-import Login from "../components/login/Login";
 import FormAuth from "../components/router/FormAuth";
 
 export const FormStepContext = createContext<[number, React.Dispatch<React.SetStateAction<number>>] | null>(null);

@@ -3,7 +3,6 @@ import { Divider, message, Modal, Upload } from "antd"
 import { PlusOutlined } from '@ant-design/icons';
 import { RcFile, UploadChangeParam, UploadFile } from 'antd/lib/upload/interface';
 import { dummyUploadRequest } from '../../utils/formUtils/uploadUtils';
-import { ImageInt } from '../../utils/formUtils/vehiclePhotosUtils';
 
 
 interface PhotoListProps {

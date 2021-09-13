@@ -1,13 +1,12 @@
 import { Col, Form, message, Row } from 'antd';
-import { ReactElement, useEffect } from 'react';
-import { FormState } from '../../hooks/useFormState';
+import { ReactElement } from 'react';
 import Input from '../Inputs/Input';
 import SelectInput from '../Inputs/SelectInput';
 import { VehicleInfoFormData } from '../../utils/formUtils/VehicleFormUtils';
 import carTypes from '../../assets/vehicleTypes.json'
 import DateInput from '../Inputs/DateInput';
 import FormButtons from '../FormButtons';
-import { FormInstance, useForm } from 'antd/lib/form/Form';
+import { FormInstance } from 'antd/lib/form/Form';
 
 interface VehicleInfoFormProps {
     formState: FormInstance<VehicleInfoFormData>;
@@ -25,7 +24,7 @@ const VehicleInfoForm = ({
     const {year, color, licensePlate, type, purchaseDate} = formState.getFieldsValue();
 
     const onSubmit = (direction: 'forward' | 'back' = 'forward') => { 
-        const isFormValid = (formState.getFieldsError().filter(({ errors }) => errors.length).length == 0);
+        const isFormValid = (formState.getFieldsError().filter(({ errors }) => errors.length).length === 0);
         // const errors = getErrors();
         if (!isFormValid) {
             // const isFormValid = errors.length == 0;

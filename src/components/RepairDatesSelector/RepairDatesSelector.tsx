@@ -1,9 +1,6 @@
-import { Calendar, Form, FormInstance, message } from "antd";
-import useBreakpoint from "antd/lib/grid/hooks/useBreakpoint";
+import { Calendar, Form, message } from "antd";
 import moment, {Moment} from "moment";
 import { ReactElement, useEffect, useState } from "react";
-import { FormState } from "../../hooks/useFormState";
-import { RepairDateSelectorFormData } from "../../utils/formUtils/CalendarUtils";
 import FormButtons from "../FormButtons";
 import DateInput from "../Inputs/DateInput";
 
@@ -31,7 +28,6 @@ const RepairDateSelector = ({
     const {startDate, endDate} = formState[0];
     const [validDateRange, setValidDateRange] = useState<[Moment, Moment]>([moment(), moment().add(60, 'days')]);
     const [validCalendarRange, setValidCalendarRange] = useState<[Moment, Moment]>([moment(), moment().add(60, 'days')]);
-    const breakPoint = useBreakpoint();
 
     //Calcula el siguiente dia habil mas cercano en que se puede recoger el auto
     useEffect(() => {

@@ -1,4 +1,4 @@
-import { ReactElement, useContext, useEffect, useState } from 'react';
+import { ReactElement, useContext, useState } from 'react';
 import { UserInfoFormData } from '../../utils/formUtils/UserFormUtils';
 import { VehicleInfoFormData } from '../../utils/formUtils/VehicleFormUtils';
 import { getEmptyVehiclePhotosForm } from '../../utils/formUtils/vehiclePhotosUtils';
@@ -8,7 +8,7 @@ import VehicleInfoForm from '../VehicleInfoForm/VehicleInfoForm';
 import VehiclePhotos from '../VehiclePhotos/VehiclePhotos';
 import 'moment/locale/es-mx';
 import moment from 'moment';
-import { VehicleRepairRequest, VehicleRepairRequestInt } from '../../requests/VehicleRepairFormRequests';
+import { VehicleRepairRequestInt } from '../../requests/VehicleRepairFormRequests';
 import { useForm } from 'antd/lib/form/Form';
 import Receipt from '../Receipt/Receipt';
 import { FormStepContext } from '../../pages/FormPage';
