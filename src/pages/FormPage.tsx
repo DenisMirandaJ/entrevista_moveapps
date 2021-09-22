@@ -7,7 +7,7 @@ const {Step} = Steps;
 
 export const FormStepContext = createContext<[number, React.Dispatch<React.SetStateAction<number>>] | null>(null);
 
-const LoginPage = (): ReactElement => {
+const FormPage = (): ReactElement => {
     const formStepState = useState(1);
     const breakpoint = useBreakpoint();
     return (
@@ -38,4 +38,4 @@ const LoginPage = (): ReactElement => {
     )
 }   
 
-export default LoginPage;
+export default FormPage;
